@@ -137,17 +137,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (!isCloud) return;
       const remote = await loadRemote();
       if (cancelled) return;
-      const localTs = local?.updatedAt ?? 0;
-      if (remote && remote.updatedAt >= localTs) {
+      // latest.current.updatedAt kullan — arada yapılan mutate'leri (ör. Spotify auth) ezmesin
+      const currentTs = latest.current.updatedAt;
+      if (remote && remote.updatedAt >= currentTs) {
         setState(remote);
         saveLocal(remote);
         setSync("synced");
-      } else if (local) {
-        // yerel daha yeni → buluta gönder
-        const ok = await saveRemote(local);
-        setSync(ok ? "synced" : "error");
       } else {
-        setSync("synced");
+        // yerel daha yeni → buluta gönder
+        const ok = await saveRemote(latest.current);
+        setSync(ok ? "synced" : "error");
       }
     })().catch(() => setSync("error"));
 
