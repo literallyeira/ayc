@@ -9,6 +9,8 @@ import {
   getTopTracks,
   getTopArtists,
   getRecent,
+  lastSpotifyError,
+  clearSpotifyError,
   type TimeRange,
   type TopTrack,
   type TopArtist,
@@ -34,6 +36,8 @@ export function SpotifyTab() {
   const [recent, setRecent] = useState<RecentItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [connecting, setConnecting] = useState(false);
+  const [spError, setSpError] = useState("");
 
   const saveAuth = useCallback(
     (a: SpotifyAuth) => mutate((d) => (d.spotify = a)),
@@ -93,6 +97,18 @@ export function SpotifyTab() {
     };
   }, [auth, token]);
 
+  // Spotify hata mesajını kontrol et (auth callback sonrası)
+  useEffect(() => {
+    const err = lastSpotifyError();
+    if (err) {
+      setSpError(err);
+      clearSpotifyError();
+    }
+  }, []);
+
+  // URL'de ?code= varsa auth devam ediyor demektir
+  const authInProgress = typeof window !== "undefined" && new URL(window.location.href).searchParams.has("code");
+
   // ── Kurulum gerekiyor
   if (!spotifyClientId) {
     return (
@@ -108,24 +124,62 @@ export function SpotifyTab() {
 
   // ── Bağlı değil
   if (!auth) {
+    // Auth callback devam ediyorsa loading göster
+    if (authInProgress) {
+      return (
+        <div className="space-y-5">
+          <Title />
+          <div className="card flex flex-col items-center gap-4 px-5 py-10 text-center">
+            <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#1DB954]/20 border-t-[#1DB954]" />
+            <p className="text-[14px] text-ink-muted">Spotify bağlantısı kuruluyor…</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-5">
         <Title />
+        {spError && (
+          <div className="card border-red-200 bg-red-50 p-4 text-[13px] leading-relaxed text-red-700">
+            <p className="font-medium">Bağlantı hatası</p>
+            <p className="mt-1">{spError}</p>
+          </div>
+        )}
         <div className="card flex flex-col items-center gap-4 px-5 py-10 text-center">
           <span className="grid h-16 w-16 place-items-center rounded-full bg-[#1DB954]/12 text-[#1DB954]">
             <IconSpotify className="h-9 w-9" />
           </span>
           <div>
-            <p className="font-display text-[18px] text-ink">Spotify’ı bağla</p>
+            <p className="font-display text-[18px] text-ink">Spotify'ı bağla</p>
             <p className="mt-1 max-w-[15rem] text-[13px] text-ink-muted">
               En çok dinlediğin şarkıları ve sanatçıları burada gör.
             </p>
           </div>
           <button
-            onClick={() => beginAuth()}
-            className="inline-flex items-center gap-2 rounded-full bg-[#1DB954] px-5 py-2.5 text-[14px] font-semibold text-white shadow-soft transition-transform active:scale-95"
+            onClick={async () => {
+              setConnecting(true);
+              setSpError("");
+              try {
+                await beginAuth();
+              } catch (e) {
+                setSpError(String(e instanceof Error ? e.message : e));
+                setConnecting(false);
+              }
+            }}
+            disabled={connecting}
+            className="inline-flex items-center gap-2 rounded-full bg-[#1DB954] px-5 py-2.5 text-[14px] font-semibold text-white shadow-soft transition-transform active:scale-95 disabled:opacity-60"
           >
-            <IconSpotify className="h-5 w-5" /> Spotify ile bağlan
+            {connecting ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                Bağlanıyor…
+              </>
+            ) : (
+              <>
+                <IconSpotify className="h-5 w-5" /> Spotify ile bağlan
+              </>
+            )}
           </button>
         </div>
       </div>

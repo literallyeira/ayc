@@ -27,14 +27,25 @@ function App() {
 
   // Spotify yetkilendirmesinden dönüş (?code=...) yakala
   useEffect(() => {
+    // URL'de code parametresi yoksa hiç çalıştırma
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (!url.searchParams.get("code")) return;
+
     completeAuthFromUrl()
       .then((res) => {
         if (res) {
           mutate((d) => (d.spotify = res));
           setTab("muzik");
         }
+        // res null ise hata localStorage'da sp_err olarak kayıtlı;
+        // SpotifyTab bunu okuyup gösterecek.
       })
-      .catch(() => {});
+      .catch(() => {
+        // Ağ hatası vb. durumda da kullanıcıyı bilgilendir
+        if (typeof window !== "undefined")
+          localStorage.setItem("sp_err", "Spotify bağlantısı sırasında beklenmeyen bir hata oluştu.");
+      });
   }, [mutate]);
 
   const { doneCount, progress } = useMemo(() => {
