@@ -1,0 +1,98 @@
+# Çalışma Programı 💜
+
+YKS (TYT + YDT) haftalık çalışma programını mobil öncelikli, interaktif bir takip sitesine dönüştüren uygulama. PDF'teki blok planı, hedefler, denemeler ve haftalık değerlendirme birebir burada — üstüne işaretleme, streak, Pomodoro, günlük ve net grafikleri eklendi.
+
+- **Framework:** Next.js 14 (App Router) + TypeScript + Tailwind
+- **Senkron:** Supabase (çoklu cihaz) — kurulmazsa otomatik olarak sadece o cihazda (localStorage) çalışır
+- **Tema:** Sakin beyaz/lavanta, Fraunces + Hanken Grotesk
+
+## İçindekiler / Özellikler
+
+- 📅 **Hafta** — 7 gün × 4 blok, dokununca işaretlenir, gün/hafta ilerlemesi, hafta ileri-geri gezinme, “Bugün” vurgusu, Pazar değerlendirmesi
+- 🎯 **Hedefler** — TYT/YDT haftalık hedefler, günlük rutin, haftalık minimum hedef takibi
+- 📊 **Denemeler** — deneme ekle/sil, net gelişim grafiği
+- 📓 **Günlük** — mood + serbest not + güne özel motivasyon, geçmiş notlar
+- ⏱️ **Pomodoro** — 45/50/60 dk odak + mola, her yerden erişilebilen yüzen buton
+- 🔥 **Streak & ilerleme halkası** — header'da
+
+---
+
+## 1) Çalıştırma (yerel)
+
+```bash
+npm install
+npm run dev
+```
+
+Tarayıcıda **http://localhost:3000** — bu haliyle hiçbir kurulum gerektirmeden **sadece o cihazda** (localStorage) çalışır.
+
+## 2) Kişiselleştirme (ona özel yap)
+
+Tek dosya: **`lib/config.ts`**
+
+```ts
+name: "Aşkım",            // header'da "Günaydın, ___" diye görünür → ismini yaz
+welcome: "...",          // girişteki kısa mesaj
+motivations: [ "...", ], // günlük dönen motivasyon cümleleri (istediğini ekle)
+```
+
+İstersen renkleri `tailwind.config.ts` içindeki `lav` / `blush` / `sage` tonlarından değiştirebilirsin.
+
+## 3) Çoklu cihaz senkronu (Supabase — ücretsiz)
+
+Telefon + bilgisayardan aynı veriye erişmek ve verinin asla kaybolmaması için:
+
+1. **[supabase.com](https://supabase.com)** → ücretsiz hesap → **New project** (bir şifre belirle, bölgeyi yakın seç).
+2. Proje açılınca sol menüden **SQL Editor** → aşağıdakini yapıştır → **Run**:
+
+   ```sql
+   create table app_state (
+     id text primary key,
+     data jsonb not null,
+     updated_at bigint not null
+   );
+
+   alter table app_state enable row level security;
+
+   -- Tek kişilik kişisel kullanım: anon anahtarla okuma/yazmaya izin
+   create policy "kisisel erisim" on app_state
+     for all using (true) with check (true);
+   ```
+
+3. Sol menü **Project Settings → API**'den şu ikisini kopyala:
+   - **Project URL**
+   - **anon public** anahtarı
+4. Proje kökünde `.env.local.example` dosyasını `.env.local` olarak kopyala ve doldur:
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
+   ```
+
+5. `npm run dev` ile yeniden başlat. Header'da nokta **“Senkron”** (yeşil) olursa bağlandı demektir.
+
+> Not: `anon` anahtarı tarayıcıda görünür; bu yüzden kurulum **tek kişilik kişisel kullanım** içindir. Linki paylaşan herkes aynı veriyi görür — siteyi gizli tut. (İstersen ileride basit bir parola ekleyebiliriz.)
+
+## 4) Vercel'e deploy
+
+1. Kodu bir GitHub reposuna pushla.
+2. **[vercel.com](https://vercel.com)** → **Add New → Project** → repoyu seç (Next.js'i otomatik tanır).
+3. **Environment Variables** kısmına Supabase kullanıyorsan iki değişkeni ekle:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. **Deploy.** Çıkan linki ona gönder; telefonda açıp **“Ana ekrana ekle”** ile uygulama gibi kullanabilir. 📱
+
+> Supabase değişkenlerini eklemezsen site yine sorunsuz çalışır, sadece veriler o cihazda kalır.
+
+---
+
+## Proje yapısı
+
+```
+app/            layout, global stiller, sayfa
+components/     Header, WeekPlan, GoalsTab, ExamsTab, JournalTab,
+                EvaluationCard, Pomodoro, BottomNav, ProgressRing, ikonlar
+lib/            program.ts (PDF planı), types, store (senkron), supabase, date, config
+```
+
+Verinin tamamı tek bir JSON state'te tutulur; her değişiklik anında localStorage'a, varsa buluta (700ms debounce) yazılır. Sekmeye dönünce buluttan tazelenir (last-write-wins).
