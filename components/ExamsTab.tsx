@@ -111,7 +111,7 @@ export function ExamsTab() {
       )}
 
       {/* Deneme listesi */}
-      <div className="space-y-3">
+      <div className="space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
         {exams.length === 0 && (
           <p className="px-1 text-[13px] text-ink-faint">
             Henüz deneme yok. “Ekle” ile ilk denemeni kaydet.

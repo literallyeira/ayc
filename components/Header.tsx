@@ -37,7 +37,7 @@ export function Header({
     : { c: "bg-lav-300", t: "Bu cihazda" };
 
   return (
-    <header className="px-5 pt-7 pb-3">
+    <header className="px-5 pt-7 pb-3 md:px-8">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[13px] font-medium text-ink-muted">

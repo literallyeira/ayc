@@ -20,7 +20,7 @@ export function BottomNav({
 }) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-paper-card/85 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[560px] items-stretch justify-around px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
+      <div className="mx-auto flex max-w-[560px] items-stretch justify-around px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 md:max-w-[760px]">
         {TABS.map(({ key, label, Icon }) => {
           const active = tab === key;
           return (

@@ -37,6 +37,7 @@ function emptyState(): AppState {
     version: 1,
     updatedAt: Date.now(),
     weeks: {},
+    targetDefs: {},
     exams: [],
     journal: {},
     activity: {},

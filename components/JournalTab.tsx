@@ -96,7 +96,7 @@ export function JournalTab() {
       {past.length > 0 && (
         <section>
           <h2 className="mb-2.5 px-1 font-display text-[18px] text-ink">Geçmiş notlar</h2>
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
             {past.map(([date, e]) => (
               <div key={date} className="card flex gap-3 p-3.5">
                 <div className="shrink-0 text-2xl leading-none">

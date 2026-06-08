@@ -126,7 +126,7 @@ export function WeekPlan({
               </button>
 
               {isOpen && (
-                <ul className="space-y-1 px-2.5 pb-3 pt-0.5 animate-fade-up">
+                <ul className="space-y-1 px-2.5 pb-3 pt-0.5 animate-fade-up md:grid md:grid-cols-2 md:gap-1 md:space-y-0">
                   {day.blocks.map((b, i) => {
                     const checked = !!w.done[`${day.key}-${i}`];
                     const meta = CATEGORY_META[b.category];

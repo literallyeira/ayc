@@ -5,7 +5,7 @@
 
 export const CONFIG = {
   // Adı: header'da "Merhaba, ___" şeklinde görünür.
-  name: "Aşkım",
+  name: "Ayça",
 
   // Onu karşılayan kısa bir mesaj (girişte görünür).
   welcome: "Bugün küçük bir adım at, gerisi gelir. Buradayım 💜",

@@ -45,7 +45,7 @@ function App() {
   }
 
   return (
-    <div className="mx-auto min-h-dvh max-w-[560px]">
+    <div className="mx-auto min-h-dvh w-full max-w-[560px] md:max-w-[760px]">
       <Header
         streak={streak}
         progress={progress}
@@ -55,7 +55,7 @@ function App() {
         sync={sync}
       />
 
-      <main className="px-5 pb-28 pt-1">
+      <main className="px-5 pb-28 pt-1 md:px-8">
         <div key={tab} className="animate-fade-up">
           {tab === "hafta" && (
             <div className="space-y-4">

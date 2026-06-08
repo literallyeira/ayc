@@ -73,6 +73,9 @@ export interface AppState {
   updatedAt: number;
   // haftalar: weekStartISO (Pazartesi) -> WeekData
   weeks: Record<string, WeekData>;
+  // haftalık minimum hedeflerin (kullanıcı tarafından düzenlenebilen) değerleri
+  // key -> hedef metni; tanımlı değilse program.ts'teki varsayılan kullanılır
+  targetDefs: Record<string, string>;
   exams: Exam[];
   // günlük: yyyy-mm-dd -> entry
   journal: Record<string, JournalEntry>;
