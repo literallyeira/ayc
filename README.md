@@ -13,6 +13,8 @@ YKS (TYT + YDT) haftalık çalışma programını mobil öncelikli, interaktif b
 - 📊 **Denemeler** — deneme ekle/sil, net gelişim grafiği
 - 📓 **Günlük** — mood + serbest not + güne özel motivasyon, geçmiş notlar
 - ⏱️ **Pomodoro** — 45/50/60 dk odak + mola, her yerden erişilebilen yüzen buton
+- ✏️ **Çizim** — basınca duyarlı kalemle günlük karalama, her güne ayrı, ana sayfada önizleme
+- 🎬 **Filmler** — TMDB ile film arama (kapak + ad), izlendi/izlenecek, kalp puanı, not
 - 🔥 **Streak & ilerleme halkası** — header'da
 
 ---
@@ -73,13 +75,29 @@ Telefon + bilgisayardan aynı veriye erişmek ve verinin asla kaybolmaması içi
 
 > Not: `anon` anahtarı tarayıcıda görünür; bu yüzden kurulum **tek kişilik kişisel kullanım** içindir. Linki paylaşan herkes aynı veriyi görür — siteyi gizli tut. (İstersen ileride basit bir parola ekleyebiliriz.)
 
+## 3.5) Film araması (TMDB — ücretsiz)
+
+Film aramanın çalışması için ücretsiz bir TMDB API anahtarı gerekir:
+
+1. **[themoviedb.org](https://www.themoviedb.org/signup)** → ücretsiz hesap aç.
+2. **Settings → API** → “Create / Request an API Key” → tip olarak **Developer** seç, formu doldur (web sitesi olarak Vercel linkini ya da `http://localhost` yazabilirsin).
+3. Sana verilen **“API Key (v3 auth)”** değerini kopyala.
+4. `.env.local` dosyasına ekle (ve Vercel’de de environment variable olarak):
+
+   ```
+   TMDB_API_KEY=buraya_v3_anahtarı
+   ```
+
+> Bu anahtar **sunucuda** kalır (`NEXT_PUBLIC_` değil), tarayıcıya sızmaz. Aramalar `app/api/movies/search` route’u üzerinden geçer. Anahtar eklenmezse uygulama çalışır, sadece film araması devre dışı kalır.
+
 ## 4) Vercel'e deploy
 
 1. Kodu bir GitHub reposuna pushla.
 2. **[vercel.com](https://vercel.com)** → **Add New → Project** → repoyu seç (Next.js'i otomatik tanır).
-3. **Environment Variables** kısmına Supabase kullanıyorsan iki değişkeni ekle:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. **Environment Variables** kısmına şunları ekle:
+   - `NEXT_PUBLIC_SUPABASE_URL` (senkron için)
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (senkron için)
+   - `TMDB_API_KEY` (film araması için)
 4. **Deploy.** Çıkan linki ona gönder; telefonda açıp **“Ana ekrana ekle”** ile uygulama gibi kullanabilir. 📱
 
 > Supabase değişkenlerini eklemezsen site yine sorunsuz çalışır, sadece veriler o cihazda kalır.

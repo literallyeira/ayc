@@ -47,6 +47,7 @@ function emptyState(): AppState {
     weeks: {},
     targetDefs: {},
     exams: [],
+    movies: [],
     journal: {},
     activity: {},
   };

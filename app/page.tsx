@@ -11,6 +11,7 @@ import { ExamsTab } from "@/components/ExamsTab";
 import { JournalTab } from "@/components/JournalTab";
 import { DrawCanvas } from "@/components/DrawCanvas";
 import { DrawingHomeCard } from "@/components/DrawingHomeCard";
+import { MoviesTab } from "@/components/MoviesTab";
 import { EvaluationCard } from "@/components/EvaluationCard";
 import { Pomodoro } from "@/components/Pomodoro";
 import { BottomNav, type TabKey } from "@/components/BottomNav";
@@ -70,6 +71,7 @@ function App() {
           {tab === "denemeler" && <ExamsTab />}
           {tab === "gunluk" && <JournalTab />}
           {tab === "cizim" && <DrawCanvas />}
+          {tab === "filmler" && <MoviesTab />}
         </div>
       </main>
 

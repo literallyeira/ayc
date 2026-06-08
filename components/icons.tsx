@@ -118,6 +118,26 @@ export const IconEraser = ({ className }: P) => (
   </svg>
 );
 
+export const IconFilm = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2.5" />
+    <path d="M7 4v16M17 4v16M3 9h4M17 9h4M3 15h4M17 15h4" />
+  </svg>
+);
+
+export const IconSearch = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7" />
+    <path d="M20 20l-3.5-3.5" />
+  </svg>
+);
+
+export const IconHeart = ({ className, filled }: P & { filled?: boolean }) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 20s-7-4.3-9.3-8.4C1.3 9 2.2 5.8 5.2 5c1.9-.5 3.7.4 4.8 1.9C11.1 5.4 12.9 4.5 14.8 5c3 .8 3.9 4 2.5 6.6C15 15.7 12 20 12 20z" />
+  </svg>
+);
+
 export const IconSpark = ({ className }: P) => (
   <svg className={base(className)} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2.5l1.6 5.1a4 4 0 0 0 2.8 2.8L21.5 12l-5.1 1.6a4 4 0 0 0-2.8 2.8L12 21.5l-1.6-5.1a4 4 0 0 0-2.8-2.8L2.5 12l5.1-1.6a4 4 0 0 0 2.8-2.8z" />

@@ -68,6 +68,17 @@ export interface JournalEntry {
   mood: number; // 1..5
 }
 
+export interface Movie {
+  id: number; // TMDB id
+  title: string;
+  year: string;
+  poster: string; // TMDB poster_path (örn /abc.jpg) ya da ""
+  status: "watched" | "watchlist";
+  rating: number; // 0..5
+  note: string;
+  addedAt: number;
+}
+
 export interface AppState {
   version: number;
   updatedAt: number;
@@ -77,6 +88,7 @@ export interface AppState {
   // key -> hedef metni; tanımlı değilse program.ts'teki varsayılan kullanılır
   targetDefs: Record<string, string>;
   exams: Exam[];
+  movies: Movie[];
   // günlük: yyyy-mm-dd -> entry
   journal: Record<string, JournalEntry>;
   // aktivite günleri (streak için): yyyy-mm-dd seti

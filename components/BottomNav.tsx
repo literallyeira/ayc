@@ -1,15 +1,16 @@
 "use client";
 
-import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush } from "./icons";
+import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush, IconFilm } from "./icons";
 
-export type TabKey = "hafta" | "hedefler" | "denemeler" | "gunluk" | "cizim";
+export type TabKey = "hafta" | "hedefler" | "denemeler" | "gunluk" | "cizim" | "filmler";
 
 const TABS: { key: TabKey; label: string; Icon: typeof IconCalendar }[] = [
   { key: "hafta", label: "Hafta", Icon: IconCalendar },
-  { key: "hedefler", label: "Hedefler", Icon: IconTarget },
-  { key: "denemeler", label: "Denemeler", Icon: IconChart },
+  { key: "hedefler", label: "Hedef", Icon: IconTarget },
+  { key: "denemeler", label: "Deneme", Icon: IconChart },
   { key: "gunluk", label: "Günlük", Icon: IconBook },
   { key: "cizim", label: "Çizim", Icon: IconBrush },
+  { key: "filmler", label: "Film", Icon: IconFilm },
 ];
 
 export function BottomNav({
@@ -21,7 +22,7 @@ export function BottomNav({
 }) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-paper-card/85 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[560px] items-stretch justify-around px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 md:max-w-[760px]">
+      <div className="mx-auto flex max-w-[560px] items-stretch justify-around px-1 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 md:max-w-[760px]">
         {TABS.map(({ key, label, Icon }) => {
           const active = tab === key;
           return (
@@ -31,14 +32,14 @@ export function BottomNav({
               className="group flex flex-1 flex-col items-center gap-1 py-1.5"
             >
               <span
-                className={`grid h-9 w-[52px] place-items-center rounded-full transition-all ${
+                className={`grid h-8 w-11 place-items-center rounded-full transition-all ${
                   active ? "bg-lav-100 text-lav-700" : "text-ink-faint group-active:scale-90"
                 }`}
               >
-                <Icon className="h-[22px] w-[22px]" />
+                <Icon className="h-[21px] w-[21px]" />
               </span>
               <span
-                className={`text-[11px] font-medium transition-colors ${
+                className={`text-[10.5px] font-medium transition-colors ${
                   active ? "text-lav-700" : "text-ink-faint"
                 }`}
               >
