@@ -68,6 +68,26 @@ export interface JournalEntry {
   mood: number; // 1..5
 }
 
+export interface Persona {
+  me: string; // kullanıcının WhatsApp'taki adı
+  partner: string;
+  samples: string[]; // kullanıcının örnek mesajları (üslup)
+  examples: { q: string; a: string }[]; // partner -> kullanıcı yanıt çiftleri
+  builtAt: number;
+}
+
+export interface ChatMsg {
+  role: "user" | "assistant"; // user = Ayça, assistant = AI (kullanıcı gibi)
+  content: string;
+  ts: number;
+}
+
+export interface SpotifyAuth {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
+}
+
 export interface Movie {
   id: number; // TMDB id
   title: string;
@@ -89,6 +109,9 @@ export interface AppState {
   targetDefs: Record<string, string>;
   exams: Exam[];
   movies: Movie[];
+  persona: Persona | null;
+  chat: ChatMsg[];
+  spotify: SpotifyAuth | null;
   // günlük: yyyy-mm-dd -> entry
   journal: Record<string, JournalEntry>;
   // aktivite günleri (streak için): yyyy-mm-dd seti

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StoreProvider, useStore } from "@/lib/store";
 import { PROGRAM } from "@/lib/program";
 import { weekStartISO, computeStreak } from "@/lib/date";
@@ -12,6 +12,8 @@ import { JournalTab } from "@/components/JournalTab";
 import { DrawCanvas } from "@/components/DrawCanvas";
 import { DrawingHomeCard } from "@/components/DrawingHomeCard";
 import { MoviesTab } from "@/components/MoviesTab";
+import { SpotifyTab } from "@/components/SpotifyTab";
+import { completeAuthFromUrl } from "@/lib/spotify";
 import { EvaluationCard } from "@/components/EvaluationCard";
 import { Pomodoro } from "@/components/Pomodoro";
 import { BottomNav, type TabKey } from "@/components/BottomNav";
@@ -19,9 +21,21 @@ import { BottomNav, type TabKey } from "@/components/BottomNav";
 const TOTAL_BLOCKS = PROGRAM.reduce((n, d) => n + d.blocks.length, 0);
 
 function App() {
-  const { state, ready, week, cloud, sync } = useStore();
+  const { state, ready, week, cloud, sync, mutate } = useStore();
   const [tab, setTab] = useState<TabKey>("hafta");
   const [weekStart, setWeekStart] = useState<string>(() => weekStartISO());
+
+  // Spotify yetkilendirmesinden dönüş (?code=...) yakala
+  useEffect(() => {
+    completeAuthFromUrl()
+      .then((res) => {
+        if (res) {
+          mutate((d) => (d.spotify = res));
+          setTab("muzik");
+        }
+      })
+      .catch(() => {});
+  }, [mutate]);
 
   const { doneCount, progress } = useMemo(() => {
     const w = week(weekStart);
@@ -72,6 +86,7 @@ function App() {
           {tab === "gunluk" && <JournalTab />}
           {tab === "cizim" && <DrawCanvas />}
           {tab === "filmler" && <MoviesTab />}
+          {tab === "muzik" && <SpotifyTab />}
         </div>
       </main>
 

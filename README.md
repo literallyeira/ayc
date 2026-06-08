@@ -15,6 +15,7 @@ YKS (TYT + YDT) haftalık çalışma programını mobil öncelikli, interaktif b
 - ⏱️ **Pomodoro** — 45/50/60 dk odak + mola, her yerden erişilebilen yüzen buton
 - ✏️ **Çizim** — basınca duyarlı kalemle günlük karalama, her güne ayrı, ana sayfada önizleme
 - 🎬 **Filmler** — TMDB ile film arama (kapak + ad), izlendi/izlenecek, kalp puanı, not
+- 🎧 **Müzik** — Spotify bağlanır; en çok dinlenen şarkı/sanatçı (4 hafta / 6 ay / tüm zamanlar) + son çalınanlar
 - 🔥 **Streak & ilerleme halkası** — header'da
 
 ---
@@ -90,6 +91,29 @@ Film aramanın çalışması için ücretsiz bir TMDB API anahtarı gerekir:
 
 > Bu anahtar **sunucuda** kalır (`NEXT_PUBLIC_` değil), tarayıcıya sızmaz. Aramalar `app/api/movies/search` route’u üzerinden geçer. Anahtar eklenmezse uygulama çalışır, sadece film araması devre dışı kalır.
 
+## 3.6) Spotify (ücretsiz — “en çok dinlenenler”)
+
+PKCE akışı kullanıldığı için **client secret gerekmez**, sadece bir Client ID yeter:
+
+1. **[developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)** → giriş → **Create app**.
+2. Adı/açıklaması fark etmez. **Redirect URIs** kısmına şunları **tam olarak** ekle (sonundaki `/` dahil):
+   - Yerel için: `http://127.0.0.1:3000/`  ⚠️ `localhost` değil, `127.0.0.1` olmalı.
+   - Canlı için: `https://SENIN-VERCEL-LINKIN.vercel.app/`
+3. **Which API/SDKs** → “Web API” seç → kaydet.
+4. App açılınca **Settings**’ten **Client ID**’yi kopyala.
+5. `.env.local` (ve Vercel env) içine ekle:
+
+   ```
+   NEXT_PUBLIC_SPOTIFY_CLIENT_ID=client_id_buraya
+   ```
+
+6. Uygulama **Development Mode**’da başlar; bu modda sadece izin verdiğin hesaplar bağlanabilir.
+   Dashboard → **User Management** → kız arkadaşının Spotify hesabının **adı + e-postasını** ekle.
+   (Ya da “Request extension” ile herkese açabilirsin, ama kişisel kullanım için gerekmez.)
+
+> Yerelde denerken siteyi `http://127.0.0.1:3000` üzerinden aç (redirect URI ile eşleşmesi için).
+> Spotify token’ları senkronlanan veride tutulur; secret olmadığından güvenlik riski düşüktür.
+
 ## 4) Vercel'e deploy
 
 1. Kodu bir GitHub reposuna pushla.
@@ -98,6 +122,7 @@ Film aramanın çalışması için ücretsiz bir TMDB API anahtarı gerekir:
    - `NEXT_PUBLIC_SUPABASE_URL` (senkron için)
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (senkron için)
    - `TMDB_API_KEY` (film araması için)
+   - `NEXT_PUBLIC_SPOTIFY_CLIENT_ID` (müzik için)
 4. **Deploy.** Çıkan linki ona gönder; telefonda açıp **“Ana ekrana ekle”** ile uygulama gibi kullanabilir. 📱
 
 > Supabase değişkenlerini eklemezsen site yine sorunsuz çalışır, sadece veriler o cihazda kalır.

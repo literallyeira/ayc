@@ -138,6 +138,26 @@ export const IconHeart = ({ className, filled }: P & { filled?: boolean }) => (
   </svg>
 );
 
+export const IconSpotify = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.62.62 0 0 1-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.8-.87 7.07-.5 9.71 1.11.3.18.39.57.22.85zm1.23-2.73a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.64-1.1 8.16-.56 11.24 1.33.36.22.48.7.25 1.07zm.11-2.85C14.83 8.96 9.4 8.78 6.3 9.72a.94.94 0 1 1-.54-1.8c3.56-1.08 9.56-.87 13.32 1.36a.94.94 0 1 1-.96 1.61z" />
+  </svg>
+);
+
+export const IconMusic = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 18V5l11-2v13" />
+    <circle cx="6" cy="18" r="3" />
+    <circle cx="17" cy="16" r="3" />
+  </svg>
+);
+
+export const IconExternal = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+  </svg>
+);
+
 export const IconSpark = ({ className }: P) => (
   <svg className={base(className)} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2.5l1.6 5.1a4 4 0 0 0 2.8 2.8L21.5 12l-5.1 1.6a4 4 0 0 0-2.8 2.8L12 21.5l-1.6-5.1a4 4 0 0 0-2.8-2.8L2.5 12l5.1-1.6a4 4 0 0 0 2.8-2.8z" />

@@ -48,6 +48,9 @@ function emptyState(): AppState {
     targetDefs: {},
     exams: [],
     movies: [],
+    persona: null,
+    chat: [],
+    spotify: null,
     journal: {},
     activity: {},
   };

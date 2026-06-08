@@ -1,8 +1,15 @@
 "use client";
 
-import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush, IconFilm } from "./icons";
+import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush, IconFilm, IconMusic } from "./icons";
 
-export type TabKey = "hafta" | "hedefler" | "denemeler" | "gunluk" | "cizim" | "filmler";
+export type TabKey =
+  | "hafta"
+  | "hedefler"
+  | "denemeler"
+  | "gunluk"
+  | "cizim"
+  | "filmler"
+  | "muzik";
 
 const TABS: { key: TabKey; label: string; Icon: typeof IconCalendar }[] = [
   { key: "hafta", label: "Hafta", Icon: IconCalendar },
@@ -11,6 +18,7 @@ const TABS: { key: TabKey; label: string; Icon: typeof IconCalendar }[] = [
   { key: "gunluk", label: "Günlük", Icon: IconBook },
   { key: "cizim", label: "Çizim", Icon: IconBrush },
   { key: "filmler", label: "Film", Icon: IconFilm },
+  { key: "muzik", label: "Müzik", Icon: IconMusic },
 ];
 
 export function BottomNav({
@@ -32,14 +40,14 @@ export function BottomNav({
               className="group flex flex-1 flex-col items-center gap-1 py-1.5"
             >
               <span
-                className={`grid h-8 w-11 place-items-center rounded-full transition-all ${
+                className={`grid h-7 w-10 place-items-center rounded-full transition-all ${
                   active ? "bg-lav-100 text-lav-700" : "text-ink-faint group-active:scale-90"
                 }`}
               >
-                <Icon className="h-[21px] w-[21px]" />
+                <Icon className="h-[20px] w-[20px]" />
               </span>
               <span
-                className={`text-[10.5px] font-medium transition-colors ${
+                className={`text-[9.5px] font-medium leading-none transition-colors ${
                   active ? "text-lav-700" : "text-ink-faint"
                 }`}
               >
