@@ -95,6 +95,29 @@ export const IconClose = ({ className }: P) => (
   </svg>
 );
 
+export const IconBrush = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15.5 4.5l4 4L10 18l-4.5.5L6 14z" />
+    <path d="M5.5 18.5c-.7.7-1.3 2-1.5 3 1-.2 2.3-.8 3-1.5" />
+    <path d="M13.5 6.5l4 4" />
+  </svg>
+);
+
+export const IconUndo = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 7L4 12l5 5" />
+    <path d="M4 12h11a5 5 0 0 1 0 10h-1" />
+  </svg>
+);
+
+export const IconEraser = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 16.5l6-6 6 6-2.5 2.5H8.5z" />
+    <path d="M10 10.5l4.5-4.5 5.5 5.5L15.5 16" />
+    <path d="M5 20.5h15" />
+  </svg>
+);
+
 export const IconSpark = ({ className }: P) => (
   <svg className={base(className)} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2.5l1.6 5.1a4 4 0 0 0 2.8 2.8L21.5 12l-5.1 1.6a4 4 0 0 0-2.8 2.8L12 21.5l-1.6-5.1a4 4 0 0 0-2.8-2.8L2.5 12l5.1-1.6a4 4 0 0 0 2.8-2.8z" />

@@ -9,6 +9,8 @@ import { WeekPlan } from "@/components/WeekPlan";
 import { GoalsTab } from "@/components/GoalsTab";
 import { ExamsTab } from "@/components/ExamsTab";
 import { JournalTab } from "@/components/JournalTab";
+import { DrawCanvas } from "@/components/DrawCanvas";
+import { DrawingHomeCard } from "@/components/DrawingHomeCard";
 import { EvaluationCard } from "@/components/EvaluationCard";
 import { Pomodoro } from "@/components/Pomodoro";
 import { BottomNav, type TabKey } from "@/components/BottomNav";
@@ -59,6 +61,7 @@ function App() {
         <div key={tab} className="animate-fade-up">
           {tab === "hafta" && (
             <div className="space-y-4">
+              <DrawingHomeCard onOpen={() => setTab("cizim")} />
               <WeekPlan weekStart={weekStart} setWeekStart={setWeekStart} />
               <EvaluationCard weekStart={weekStart} />
             </div>
@@ -66,6 +69,7 @@ function App() {
           {tab === "hedefler" && <GoalsTab weekStart={weekStart} />}
           {tab === "denemeler" && <ExamsTab />}
           {tab === "gunluk" && <JournalTab />}
+          {tab === "cizim" && <DrawCanvas />}
         </div>
       </main>
 
