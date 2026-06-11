@@ -16,7 +16,10 @@ YKS (TYT + YDT) haftalık çalışma programını mobil öncelikli, interaktif b
 - ✏️ **Çizim** — basınca duyarlı kalemle günlük karalama, her güne ayrı, ana sayfada önizleme
 - 🎬 **Filmler** — TMDB ile film arama (kapak + ad), izlendi/izlenecek, kalp puanı, not
 - 🎧 **Müzik** — Spotify bağlanır; en çok dinlenen şarkı/sanatçı (4 hafta / 6 ay / tüm zamanlar) + son çalınanlar
+- 🐍 **Oyun** — mola arası yılan oyunu (telefonda kaydırma, bilgisayarda ok tuşları), rekor cihazlar arası senkronize
 - 🔥 **Streak & ilerleme halkası** — header'da
+
+> **Senkron notu:** Cihazlar arası veri alan bazında *birleştirilir* (filmler, denemeler, günlük, işaretler…). İki cihaz aynı anda kullanılsa bile kimsenin verisi ezilmez; silinenler de geri dirilmez. Sayfa kapanırken bekleyen kayıt anında gönderilir.
 
 ---
 

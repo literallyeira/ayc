@@ -158,6 +158,15 @@ export const IconExternal = ({ className }: P) => (
   </svg>
 );
 
+export const IconGamepad = ({ className }: P) => (
+  <svg className={base(className)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 8h10a5 5 0 0 1 5 5v3.5a2.5 2.5 0 0 1-4.5 1.5L16 16H8l-1.5 2A2.5 2.5 0 0 1 2 16.5V13a5 5 0 0 1 5-5z" />
+    <path d="M7.5 11v3M6 12.5h3" />
+    <circle cx="16" cy="11.5" r="0.6" fill="currentColor" />
+    <circle cx="18.5" cy="13.5" r="0.6" fill="currentColor" />
+  </svg>
+);
+
 export const IconSpark = ({ className }: P) => (
   <svg className={base(className)} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2.5l1.6 5.1a4 4 0 0 0 2.8 2.8L21.5 12l-5.1 1.6a4 4 0 0 0-2.8 2.8L12 21.5l-1.6-5.1a4 4 0 0 0-2.8-2.8L2.5 12l5.1-1.6a4 4 0 0 0 2.8-2.8z" />

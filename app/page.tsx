@@ -12,6 +12,7 @@ import { JournalTab } from "@/components/JournalTab";
 import { DrawCanvas } from "@/components/DrawCanvas";
 import { DrawingHomeCard } from "@/components/DrawingHomeCard";
 import { MoviesTab } from "@/components/MoviesTab";
+import { SnakeGame } from "@/components/SnakeGame";
 import { SpotifyTab } from "@/components/SpotifyTab";
 import { completeAuthFromUrl } from "@/lib/spotify";
 import { EvaluationCard } from "@/components/EvaluationCard";
@@ -98,6 +99,7 @@ function App() {
           {tab === "cizim" && <DrawCanvas />}
           {tab === "filmler" && <MoviesTab />}
           {tab === "muzik" && <SpotifyTab />}
+          {tab === "oyun" && <SnakeGame />}
         </div>
       </main>
 

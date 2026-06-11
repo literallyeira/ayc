@@ -1,6 +1,6 @@
 "use client";
 
-import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush, IconFilm, IconMusic } from "./icons";
+import { IconCalendar, IconTarget, IconChart, IconBook, IconBrush, IconFilm, IconMusic, IconGamepad } from "./icons";
 
 export type TabKey =
   | "hafta"
@@ -9,7 +9,8 @@ export type TabKey =
   | "gunluk"
   | "cizim"
   | "filmler"
-  | "muzik";
+  | "muzik"
+  | "oyun";
 
 const TABS: { key: TabKey; label: string; Icon: typeof IconCalendar }[] = [
   { key: "hafta", label: "Hafta", Icon: IconCalendar },
@@ -19,6 +20,7 @@ const TABS: { key: TabKey; label: string; Icon: typeof IconCalendar }[] = [
   { key: "cizim", label: "Çizim", Icon: IconBrush },
   { key: "filmler", label: "Film", Icon: IconFilm },
   { key: "muzik", label: "Müzik", Icon: IconMusic },
+  { key: "oyun", label: "Oyun", Icon: IconGamepad },
 ];
 
 export function BottomNav({

@@ -46,6 +46,8 @@ export function ExamsTab() {
   const delExam = (id: string) =>
     mutate((d) => {
       d.exams = d.exams.filter((e) => e.id !== id);
+      // cihazlar arası birleştirmede geri dirilmesin
+      d.removed = { ...(d.removed ?? {}), [`exam:${id}`]: Date.now() };
     });
 
   // Grafik verisi

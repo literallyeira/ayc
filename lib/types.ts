@@ -116,4 +116,9 @@ export interface AppState {
   journal: Record<string, JournalEntry>;
   // aktivite günleri (streak için): yyyy-mm-dd seti
   activity: Record<string, true>;
+  // silinen öğeler (cihazlar arası birleştirmede geri dirilmesin diye):
+  // "movie:603" / "exam:<uuid>" -> silinme zamanı (ms)
+  removed?: Record<string, number>;
+  // mini oyun rekorları
+  games?: { snakeBest: number };
 }

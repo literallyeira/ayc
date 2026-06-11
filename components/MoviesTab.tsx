@@ -108,6 +108,8 @@ export function MoviesTab() {
   const remove = (id: number) =>
     mutate((d) => {
       d.movies = (d.movies ?? []).filter((m) => m.id !== id);
+      // cihazlar arası birleştirmede geri dirilmesin
+      d.removed = { ...(d.removed ?? {}), [`movie:${id}`]: Date.now() };
     });
 
   const counts = {
@@ -162,7 +164,7 @@ export function MoviesTab() {
               <div key={r.id} className="flex items-center gap-3 p-2.5">
                 <div className="h-[66px] w-[44px] shrink-0 overflow-hidden rounded-md bg-paper-sunk">
                   {r.poster ? (
-                    <img src={posterUrl(r.poster, "w185")} alt="" className="h-full w-full object-cover" />
+                    <img src={posterUrl(r.poster, "w185")} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                   ) : (
                     <div className="grid h-full w-full place-items-center text-ink-faint">
                       <IconFilm className="h-5 w-5" />
@@ -224,7 +226,7 @@ export function MoviesTab() {
             <div key={m.id} className="card overflow-hidden">
               <div className="relative aspect-[2/3] bg-paper-sunk">
                 {m.poster ? (
-                  <img src={posterUrl(m.poster)} alt={m.title} className="h-full w-full object-cover" />
+                  <img src={posterUrl(m.poster)} alt={m.title} loading="lazy" decoding="async" className="h-full w-full object-cover" />
                 ) : (
                   <div className="grid h-full w-full place-items-center text-ink-faint">
                     <IconFilm className="h-8 w-8" />

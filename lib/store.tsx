@@ -14,10 +14,12 @@ import {
   isCloud,
   loadRemote,
   saveRemote,
+  saveRemoteKeepalive,
   loadRemoteDrawings,
   saveRemoteDrawings,
   type DrawingsDoc,
 } from "./supabase";
+import { mergeStates, mergeDrawings } from "./merge";
 
 const LS_KEY = "calisma-programi/state/v1";
 const DRAW_LS_KEY = "calisma-programi/drawings/v1";
@@ -53,6 +55,8 @@ function emptyState(): AppState {
     spotify: null,
     journal: {},
     activity: {},
+    removed: {},
+    games: { snakeBest: 0 },
   };
 }
 
@@ -137,14 +141,21 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (!isCloud) return;
       const remote = await loadRemote();
       if (cancelled) return;
-      // latest.current.updatedAt kullan — arada yapılan mutate'leri (ör. Spotify auth) ezmesin
-      const currentTs = latest.current.updatedAt;
-      if (remote && remote.updatedAt >= currentTs) {
-        setState(remote);
-        saveLocal(remote);
-        setSync("synced");
+      if (remote) {
+        // Eskiden "son yazan kazanır" ile belge bütün halinde değiştiriliyordu;
+        // bu, iki cihaz arasında veri (film, günlük, işaret…) kaybettiriyordu.
+        // Artık alan bazında birleştiriyoruz — kimsenin verisi ezilmez.
+        const merged = mergeStates(latest.current, remote);
+        setState(merged);
+        saveLocal(merged);
+        if (JSON.stringify(merged) !== JSON.stringify(remote)) {
+          const ok = await saveRemote(merged);
+          setSync(ok ? "synced" : "error");
+        } else {
+          setSync("synced");
+        }
       } else {
-        // yerel daha yeni → buluta gönder
+        // bulutta hiç veri yok → yereldekini gönder
         const ok = await saveRemote(latest.current);
         setSync(ok ? "synced" : "error");
       }
@@ -164,12 +175,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (!isCloud) return;
       const remote = await loadRemoteDrawings();
       if (cancelled || !remote) return;
-      const localTs = local?.updatedAt ?? 0;
-      if (remote.updatedAt >= localTs) {
-        setDrawings(remote);
-        saveLocalDrawings(remote);
-      } else if (local) {
-        await saveRemoteDrawings(local);
+      const merged = mergeDrawings(drawLatest.current, remote);
+      setDrawings(merged);
+      saveLocalDrawings(merged);
+      if (JSON.stringify(merged) !== JSON.stringify(remote)) {
+        await saveRemoteDrawings(merged);
       }
     })().catch(() => {});
     return () => {
@@ -230,26 +240,58 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [state]
   );
 
-  // Sekmeye geri dönünce buluttan tazele
+  // Sekmeye geri dönünce buluttan tazele (birleştirerek);
+  // sekme gizlenirken / sayfa kapanırken bekleyen kaydı hemen gönder.
   useEffect(() => {
     if (!isCloud) return;
-    const onFocus = async () => {
+
+    const refresh = async () => {
       const remote = await loadRemote();
-      if (remote && remote.updatedAt > latest.current.updatedAt) {
-        setState(remote);
-        saveLocal(remote);
+      if (remote) {
+        const merged = mergeStates(latest.current, remote);
+        if (JSON.stringify(merged) !== JSON.stringify(latest.current)) {
+          setState(merged);
+          saveLocal(merged);
+        }
+        if (JSON.stringify(merged) !== JSON.stringify(remote)) {
+          saveRemote(merged).catch(() => {});
+        }
       }
       const rd = await loadRemoteDrawings();
-      if (rd && rd.updatedAt > drawLatest.current.updatedAt) {
-        setDrawings(rd);
-        saveLocalDrawings(rd);
+      if (rd) {
+        const merged = mergeDrawings(drawLatest.current, rd);
+        if (JSON.stringify(merged) !== JSON.stringify(drawLatest.current)) {
+          setDrawings(merged);
+          saveLocalDrawings(merged);
+        }
       }
     };
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") onFocus();
-    });
+
+    // Debounce bekleyen kayıt varsa kaçırma: telefonda ekleyip hemen
+    // uygulamadan çıkınca buluta hiç yazılmıyordu.
+    const flush = () => {
+      if (saveTimer.current) {
+        clearTimeout(saveTimer.current);
+        saveTimer.current = null;
+        saveRemoteKeepalive(latest.current);
+        setSync("synced");
+      }
+      if (drawTimer.current) {
+        clearTimeout(drawTimer.current);
+        drawTimer.current = null;
+        saveRemoteDrawings(drawLatest.current).catch(() => {});
+      }
+    };
+
+    const onVis = () => {
+      if (document.visibilityState === "visible") refresh().catch(() => {});
+      else flush();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pagehide", flush);
     return () => {
-      document.removeEventListener("visibilitychange", onFocus);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", flush);
     };
   }, []);
 

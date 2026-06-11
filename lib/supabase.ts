@@ -51,6 +51,37 @@ export async function saveRemote(state: AppState): Promise<boolean> {
   return true;
 }
 
+// Sayfa kapanırken/gizlenirken bekleyen kaydı kaçırmamak için keepalive ile yaz.
+// (supabase-js fetch'i keepalive desteklemiyor; PostgREST'e doğrudan gidiyoruz.)
+export function saveRemoteKeepalive(state: AppState): void {
+  if (!isCloud) return;
+  try {
+    const body = JSON.stringify({
+      id: ROW_ID,
+      data: state,
+      updated_at: state.updatedAt,
+    });
+    // keepalive istek gövdesi ~64KB ile sınırlı; aşıyorsa normal kanala bırak
+    if (body.length > 60_000) {
+      void saveRemote(state);
+      return;
+    }
+    fetch(`${url}/rest/v1/${TABLE}?on_conflict=id`, {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        "Content-Type": "application/json",
+        apikey: anon as string,
+        Authorization: `Bearer ${anon}`,
+        Prefer: "resolution=merge-duplicates",
+      },
+      body,
+    }).catch(() => {});
+  } catch {
+    /* sessizce geç */
+  }
+}
+
 // Çizimler ayrı satırda (id='drawings') tutulur — ana veriyi şişirmemek için.
 export async function loadRemoteDrawings(): Promise<DrawingsDoc | null> {
   if (!client) return null;
